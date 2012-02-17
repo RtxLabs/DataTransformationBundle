@@ -2,7 +2,7 @@
 
 <phpunit colors="false" bootstrap="Tests/bootstrap.php">
     <php>
-        <server name="KERNEL_DIR" value="../../.." />
+        <server name="KERNEL_DIR" value="." />
     </php>
 
     <testsuites>
