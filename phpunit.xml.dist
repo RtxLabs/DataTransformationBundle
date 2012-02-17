@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit colors="false" bootstrap="Tests/bootstrap.php">
+    <php>
+        <server name="KERNEL_DIR" value="../../.." />
+    </php>
+
     <testsuites>
         <testsuite name="DataTransformationBundle Test Suite">
             <directory suffix="Test.php">./Tests/</directory>
