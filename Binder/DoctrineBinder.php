@@ -21,6 +21,7 @@ class DoctrineBinder implements IBinder {
     private $to;
     private $fields = array();
     private $except = array();
+    private $joins = array();
 
     /**
      * @param $em \Doctrine\ORM\EntityManager
@@ -53,6 +54,11 @@ class DoctrineBinder implements IBinder {
 
     public function field($field, $value) {
         $this->fields[$field] = $value;
+        return $this;
+    }
+
+    public function join($field, IBinder $binder) {
+        $this->joins[$field] = $binder;
         return $this;
     }
 
@@ -99,6 +105,10 @@ class DoctrineBinder implements IBinder {
 
         foreach ($this->fields as $field => $value) {
             $getMethodBinder->field($field, $value);
+        }
+
+        foreach ($this->joins as $field => $binder) {
+            $getMethodBinder->join($field, $binder);
         }
 
         foreach ($this->except as $except) {

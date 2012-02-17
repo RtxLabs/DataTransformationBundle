@@ -10,9 +10,10 @@ use RtxLabs\UserBundle\Entity\User;
 use RtxLabs\DataTransformationBundle\Tests\Mockups\EntityDummy;
 use RtxLabs\DataTransformationBundle\Tests\Mockups\EntityMock;
 use RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\CarMock;
+use RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\GroupMock;
 use RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\UserMock;
 use RtxLabs\DataTransformationBundle\Tests\Mockups\EntityDummyWithoutId;
-use Rotex\Sbp\CoreBundle\Tests\TestHelper;
+use RtxLabs\DataTransformationBundle\Tests\TestHelper;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -22,11 +23,6 @@ class DoctrineBinderTest extends WebTestCase
      * @var \Doctrine\ORM\EntityManager
      */
     private $em;
-
-    /**
-     * @var \Symfony\Bundle\FrameworkBundle\Client
-     */
-    private $client;
 
     public function setUp()
     {
@@ -145,5 +141,21 @@ class DoctrineBinderTest extends WebTestCase
 
         $this->assertEquals($user->getUsername(), $data["username"]);
         $this->assertArrayNotHasKey("deletedAt", $data);
+    }
+
+    public function testJoin() {
+        $user = new UserMock();
+        $group1 = new GroupMock();
+        $group2 = new GroupMock();
+
+        $user->addGroup($group1);
+        $user->addGroup($group2);
+
+        $data = DoctrineBinder::create($this->em)
+            ->bind($user)
+            ->join("groups", DoctrineBinder::create($this->em))
+            ->execute();
+
+        $this->assertEquals(2, count($data["groups"]));
     }
 }

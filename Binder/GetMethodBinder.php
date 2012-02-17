@@ -9,6 +9,7 @@ class GetMethodBinder implements IBinder {
     private $bind;
     private $except = array();
     private $fields = array();
+    private $joins = array();
     private $to;
 
     /**
@@ -44,6 +45,11 @@ class GetMethodBinder implements IBinder {
         return $this;
     }
 
+    public function join($field, $binder) {
+        $this->joins[$field] = $binder;
+        return $this;
+    }
+
     /**
      * @param object $entity
      * @return GetMethodBinder
@@ -61,6 +67,10 @@ class GetMethodBinder implements IBinder {
         //todo: move array_values(...) to rotex lib
         $result = array();
         $binder = Binder::create();
+
+        foreach ($this->joins as $field => $joinedBinder) {
+            $binder->join($field, $joinedBinder);
+        }
 
         if (is_null($this->bind)) {
             return null;

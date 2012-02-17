@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\UserMock
  *
- * @ORM\Table(name="core_test_user_mock")
+ * @ORM\Table(name="user_mock")
  * @ORM\Entity(repositoryClass="RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\UserMockRepository")
  */
 class UserMock
@@ -47,6 +47,16 @@ class UserMock
      * @ORM\ManyToOne(targetEntity="CarMock")
      */
     private $car;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="UserMock")
+     * @ORM\JoinTable(name="user_group",
+     *          joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *          inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
+     *      )
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $groups;
 
     /**
      * Get id
@@ -133,5 +143,15 @@ class UserMock
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    public function addGroup(GroupMock $groups)
+    {
+        $this->groups[] = $groups;
+    }
+
+    public function getGroups()
+    {
+        return $this->groups;
     }
 }
