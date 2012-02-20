@@ -148,6 +148,7 @@ class GetMethodBinder implements IBinder {
         $copy->fields = $this->fields;
         $copy->to = $this->to;
         $copy->except = $this->except;
+        $copy->joins = $this->joins;
 
         return $copy;
     }
