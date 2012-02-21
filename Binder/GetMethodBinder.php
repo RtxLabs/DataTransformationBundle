@@ -64,68 +64,68 @@ class GetMethodBinder implements IBinder {
      */
     public function execute()
     {
-        //todo: move array_values(...) to rotex lib
-        $result = array();
-        $binder = Binder::create();
-
-        foreach ($this->joins as $field => $joinedBinder) {
-            $binder->join($field, $joinedBinder);
-        }
-
-        if (is_null($this->bind)) {
+        if ($this->bind == null) {
             return null;
         }
-        elseif (is_array($this->bind) && array_values($this->bind) === $this->bind) {
+
+        $result = array();
+
+        if (is_array($this->bind) && !$this->isAssocArray($this->bind)) {
             foreach ($this->bind as $item) {
-                $result[] = $this->copy()->bind($item)->execute();
+                $result[] = $this->bind($item)->execute();
             }
         }
-        elseif (is_array($this->bind) && array_values($this->bind) !== $this->bind) {
-            $binder->bind($this->bind)->to($this->to);
+        else {
+            $binder = Binder::create()->bind($this->bind)->to($this->to);
 
-            foreach ($this->fields as $key=>$value) {
-                $binder->field($key, $value);
+            foreach ($this->fields as $field=>$closure) {
+                $binder->field($field, $closure);
+            }
+
+            foreach ($this->joins as $field => $joinedBinder) {
+                $binder->join($field, $joinedBinder);
             }
 
             foreach ($this->bind as $key=>$value) {
                 $binder->field($key, $value);
             }
 
-            $result = $binder->execute();
-        }
-        elseif (is_object($this->bind)) {
-            $binder->bind($this->bind)->to($this->to);
+            if (is_object($this->bind)) {
+                $reflection = new \ReflectionObject($this->bind);
 
-            foreach ($this->fields as $field=>$closure) {
-                $binder->field($field, $closure);
-            }
+                foreach ($reflection->getMethods() as $method) {
+                    if ($this->isGetter($method)
+                        && !$this->methodReturnsSymfonyCollection($method)) {
 
-            $reflection = new \ReflectionObject($this->bind);
+                        $fieldName = lcfirst(substr($method->getName(), 3));
 
-            foreach ($reflection->getMethods() as $method) {
-                if ($this->isGetter($method)
-                    && !$this->methodReturnsSymfonyCollection($method)) {
+                        if (!in_array($fieldName, $this->except)) {
+                            $binder->field($fieldName);
+                        }
+                    }
+                }
 
-                    $fieldName = lcfirst(substr($method->getName(), 3));
-
-                    if (!in_array($fieldName, $this->except)) {
-                        $binder->field($fieldName);
+                foreach ($reflection->getProperties() as $property) {
+                    if ($property->isPublic() && !in_array($property->getName(), $this->except)) {
+                        $binder->field($property->getName());
                     }
                 }
             }
-
-            foreach ($reflection->getProperties() as $property) {
-                if ($property->isPublic() && !in_array($property->getName(), $this->except)) {
-                    $binder->field($property->getName());
+            elseif ($this->isAssocArray($this->bind)) {
+                foreach ($this->bind as $key=>$value) {
+                    $binder->field($key, $value);
                 }
             }
-
-            $binder->bind($this->bind);
 
             $result = $binder->execute();
         }
 
         return $result;
+    }
+
+    public function isAssocArray($array)
+    {
+        return is_array($array) && array_values($array) !== $array;
     }
 
     /**
@@ -140,17 +140,6 @@ class GetMethodBinder implements IBinder {
         else {
             return false;
         }
-    }
-
-    private function copy() {
-        $copy = new GetMethodBinder();
-        $copy->bind = $this->bind;
-        $copy->fields = $this->fields;
-        $copy->to = $this->to;
-        $copy->except = $this->except;
-        $copy->joins = $this->joins;
-
-        return $copy;
     }
 
     private function isGetter($method)

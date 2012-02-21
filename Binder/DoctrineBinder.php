@@ -72,6 +72,16 @@ class DoctrineBinder implements IBinder {
      */
     public function execute()
     {
+        if ($this->bind == null) {
+            return null;
+        }
+
+        $getMethodBinder = GetMethodBinder::create()->bind($this->bind)->to($this->to);
+
+        if ($this->bind instanceof PersistentCollection) {
+            $getMethodBinder->bind($this->bind->toArray());
+        }
+
         if ($this->to != null) {
             $modifiedBind = array();
 
@@ -94,14 +104,23 @@ class DoctrineBinder implements IBinder {
                 }
             }
 
-            $this->bind = $modifiedBind;
+            $getMethodBinder->bind($modifiedBind);
         }
 
-        if ($this->bind instanceof PersistentCollection) {
-            $this->bind = $this->bind->toArray();
-        }
+        if (is_object($this->bind) && !($this->bind instanceof PersistentCollection)) {
+            $reflection = new \ReflectionObject($this->bind);
+            $metaData = $this->em->getClassMetadata($reflection->getName());
 
-        $getMethodBinder = GetMethodBinder::create()->bind($this->bind);
+            foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                if (substr($method->getName(), 0, 3) == "get") {
+                    $fieldName = lcfirst(substr($method->getName(), 3));
+
+                    if ($metaData->isCollectionValuedAssociation($fieldName)) {
+                        $getMethodBinder->except($fieldName);
+                    }
+                }
+            }
+        }
 
         foreach ($this->fields as $field => $value) {
             $getMethodBinder->field($field, $value);
@@ -114,8 +133,6 @@ class DoctrineBinder implements IBinder {
         foreach ($this->except as $except) {
             $getMethodBinder->except($except);
         }
-
-        $getMethodBinder->to($this->to);
 
         return $getMethodBinder->execute();
     }
