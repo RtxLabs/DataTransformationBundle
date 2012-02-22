@@ -60,18 +60,18 @@ class DoctrineBinderTest extends WebTestCase
         $this->em->persist($car);
         $this->em->flush();
 
-        $data = array();
-        $data["username"] = "uklawitter";
-        $data["deletedAt"] = $now->getTimestamp();
-        $data["deletedBy"] = null;
-        $data["car"] = $car->getId();
-        $data["calculated"] = 75;
+        $data = new \stdClass();
+        $data->username = "uklawitter";
+        $data->deletedAt = $now->getTimestamp();
+        $data->deletedBy = null;
+        $data->car = $car->getId();
+        $data->calculated = 75;
 
         $user = new UserMock();
 
         DoctrineBinder::create($this->em)->bind($data)->to($user)->execute();
 
-        $this->assertEquals($data["username"], $user->getUsername());
+        $this->assertEquals($data->username, $user->getUsername());
         $this->assertEquals($now->getTimestamp(), $user->getDeletedAt()->getTimestamp());
         $this->assertEquals($car->getId(), $user->getCar()->getId());
     }
@@ -176,9 +176,35 @@ class DoctrineBinderTest extends WebTestCase
             ->join("groups", DoctrineBinder::create($this->em))
             ->execute();
 
-//        var_dump($data); die();
-
         $this->assertEquals(2, count($data));
         $this->assertEquals(1, count($data[0]["groups"]));
     }
+
+    public function testBindEmptyArray() {
+        $result = DoctrineBinder::create($this->em)->bind(array())->execute();
+
+        $this->assertEquals(array(), $result);
+    }
+
+//    public function testBindUserWithGroups() {
+//        $user = UserMock::create("user1");
+//        $group1 = GroupMock::create("g1");
+//        $group2 = GroupMock::create("g2");
+//
+//        $user->addGroup($group1);
+//        $user->addGroup($group2);
+//
+//        $this->em->persist($user);
+//        $this->em->persist($group1);
+//        $this->em->persist($group2);
+//        $this->em->flush();
+//
+//        $data = array();
+//        $data["id"] = $user->getId();
+//        $data["groups"] = array(array("id"=>$group1->getId()));
+//
+//        DoctrineBinder::create($this->em)->bind($data)->to($user)->execute();
+//
+//        $this->assertEquals(1, count($user->getGroups()));
+//    }
 }

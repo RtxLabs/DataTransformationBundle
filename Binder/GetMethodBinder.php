@@ -64,7 +64,7 @@ class GetMethodBinder implements IBinder {
      */
     public function execute()
     {
-        if ($this->bind == null) {
+        if ($this->bind === null) {
             return null;
         }
 
@@ -135,7 +135,7 @@ class GetMethodBinder implements IBinder {
     private function methodReturnsSymfonyCollection($method)
     {
         if (strpos($method->getDocComment(), '@return Doctrine\Common\Collections\Collection') !== false) {
-            return true;
+            return false;
         }
         else {
             return false;

@@ -14,28 +14,6 @@ class GetMethodBinderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf("RtxLabs\DataTransformationBundle\Binder\GetMethodBinder", GetMethodBinder::create());
     }
 
-    public function testBindEntity()
-    {
-        $parent = new EntityDummy();
-        $parent->setId(4);
-
-        $entity = new EntityDummy();
-        $entity->setParent($parent);
-
-        $entity->addChild(new EntityDummy());
-        $entity->addChild(new EntityDummy());
-
-        $result = GetMethodBinder::create()->bind($entity)->execute();
-
-        $this->assertEquals($entity->getId(), $result["id"]);
-        $this->assertEquals($entity->createdAt, $result["createdAt"]);
-        $this->assertEquals($entity->getFirstName(), $result["firstName"]);
-        $this->assertEquals($entity->getLastName(), $result["lastName"]);
-        $this->assertEquals($entity->getParent(), $result["parent"]);
-        $this->assertEquals($entity->hobby, $result["hobby"]);
-        $this->assertArrayNotHasKey("childs", $result);
-    }
-
     public function testBindWithoutEntity()
     {
         $this->assertNull(GetMethodBinder::create()->execute());
@@ -100,6 +78,11 @@ class GetMethodBinderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($bind->getUsername(), $result["username"]);
         $this->assertArrayNotHasKey("deletedAt", $result);
+    }
+
+    public function testBindEmptyArray() {
+        $result = GetMethodBinder::create()->bind(array())->execute();
+        $this->assertEquals(array(), $result);
     }
 
     private function assertBound($value, $property, $entity)

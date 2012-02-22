@@ -26,6 +26,12 @@ class GroupMock
      */
     private $name = "";
 
+    public static function create($name) {
+        $group = new self();
+        $group->setName($name);
+        return $group;
+    }
+
     public function getId()
     {
         return $this->id;

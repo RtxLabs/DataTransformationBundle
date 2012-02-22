@@ -72,7 +72,7 @@ class DoctrineBinder implements IBinder {
      */
     public function execute()
     {
-        if ($this->bind == null) {
+        if ($this->bind === null) {
             return null;
         }
 
@@ -107,7 +107,7 @@ class DoctrineBinder implements IBinder {
             $getMethodBinder->bind($modifiedBind);
         }
 
-        if (is_object($this->bind) && !($this->bind instanceof PersistentCollection)) {
+        if (is_object($this->bind) && !($this->bind instanceof \stdClass) && !($this->bind instanceof PersistentCollection)) {
             $reflection = new \ReflectionObject($this->bind);
             $metaData = $this->em->getClassMetadata($reflection->getName());
 

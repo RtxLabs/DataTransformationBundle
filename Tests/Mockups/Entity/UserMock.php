@@ -58,6 +58,13 @@ class UserMock
      */
     private $groups;
 
+    public static function create($name) {
+        $user = new self();
+        $user->setUsername($name);
+
+        return $user;
+    }
+
     /**
      * Get id
      *

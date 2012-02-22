@@ -194,6 +194,12 @@ class BinderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($bind["lastName"], $to->getLastName());
     }
 
+    public function testBindEmptyArray() {
+        $result = Binder::create()->bind(array())->execute();
+
+        $this->assertEquals(array(), $result);
+    }
+
     private function assertBound($value, $field, $entity)
     {
         $result = Binder::create()->bind($entity)->field($field)->execute();
