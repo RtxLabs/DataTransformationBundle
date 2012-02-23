@@ -157,7 +157,12 @@ class Binder implements IBinder {
      */
     private function getValue($object, $field) {
         if (is_array($object)) {
-            return $object[$field];
+            if (array_key_exists($field, $object)) {
+                return $object[$field];
+            }
+            else {
+                return null;
+            }
         }
 
         $reflection = new \ReflectionObject($object);
@@ -175,9 +180,11 @@ class Binder implements IBinder {
         throw new \LogicException("unknown field: $field in " . get_class($object));
     }
 
-    //todo: rename because object can be an array
     private function setValueToFieldOfObject($value, $field, $object)
     {
+        assert(is_array($object) || is_object($object));
+        assert(is_string($field));
+
         if (is_array($object)) {
             $object[$field] = $value;
         }

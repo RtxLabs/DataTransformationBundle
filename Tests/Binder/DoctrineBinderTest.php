@@ -186,6 +186,30 @@ class DoctrineBinderTest extends WebTestCase
         $this->assertEquals(array(), $result);
     }
 
+//    public function testBindArrayToEntityWithJoin() {
+//        $user = UserMock::create();
+//        $group1 = GroupMock::create();
+//        $group2 = GroupMock::create();
+//
+//        $this->em->persist($user);
+//        $this->em->persist($group1);
+//        $this->em->persist($group2);
+//        $this->em->flush();
+//
+//        $data = array("groups" => array(
+//            array("id" => $group1->getId()),
+//            array("id" => $group2->getId())
+//        ));
+//
+//        DoctrineBinder::create($this->em)
+//            ->bind($data)
+//            ->to($user)
+//            ->join("groups", DoctrineBinder::create($this->em))
+//            ->execute();
+//
+//        $this->assertEquals(2, count($user->getGroups()));
+//    }
+
 //    public function testBindUserWithGroups() {
 //        $user = UserMock::create("user1");
 //        $group1 = GroupMock::create("g1");

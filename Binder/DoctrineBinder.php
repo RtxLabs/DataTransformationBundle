@@ -57,6 +57,15 @@ class DoctrineBinder implements IBinder {
         return $this;
     }
 
+    /**
+     * The given binder will be bound and executed on every value of the given field.
+     *
+     * $binder->join("users", Binder::create()->field("username"));
+     *
+     * @param $field
+     * @param IBinder $binder
+     * @return DoctrineBinder
+     */
     public function join($field, IBinder $binder) {
         $this->joins[$field] = $binder;
         return $this;

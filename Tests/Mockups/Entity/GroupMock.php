@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class GroupMock
 {
+    private static $COUNT = 1;
+
     /**
      * @var integer $id
      *
@@ -26,9 +28,12 @@ class GroupMock
      */
     private $name = "";
 
-    public static function create($name) {
+    public static function create() {
         $group = new self();
-        $group->setName($name);
+        $group->setName("name"+self::$COUNT);
+
+        self::$COUNT++;
+
         return $group;
     }
 
