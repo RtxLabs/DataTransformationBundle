@@ -101,8 +101,14 @@ class DoctrineBinder implements IBinder {
                 $fieldType = $metaData->getTypeOfField($field);
 
                 if ($value != null && $fieldType == Type::DATETIME || $fieldType == Type::DATE || $fieldType == Type::TIME) {
-                    $date = new \DateTime();
-                    $date->setTimestamp($value);
+                    if ($value < 1) {
+                        $date = null;
+                    }
+                    else {
+                        $date = new \DateTime();
+                        $date->setTimestamp($value);
+                    }
+
                     $modifiedBind[$field] = $date;
                 }
                 elseif ($value != null && $metaData->isSingleValuedAssociation($field)) {
