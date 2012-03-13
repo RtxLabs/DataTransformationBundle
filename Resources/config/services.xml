@@ -4,17 +4,21 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
     <parameters>
-        <parameter key="rtx_labs_data_transformation.example.class">RtxLabs\DataTransformationBundle\Example</parameter>
+        <parameter key="rtxlabs_datatransformation.whitelisting">true</parameter>
     </parameters>
 
     <services>
-        <service id="rtx_labs_data_transformation.example" class="%rtx_labs_data_transformation.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="rtxlabs.datatransformation.doctrinebinder"
+                class="RtxLabs\DataTransformationBundle\Binder\DoctrineBinder"
+                scope="request">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%rtxlabs_datatransformation.whitelisting%</argument>
+        </service>
+        <service id="rtxlabs.datatransformation.getmethodbinder"
+                class="RtxLabs\DataTransformationBundle\Binder\GetMethodBinder"
+                scope="request">
+            <argument>%rtxlabs_datatransformation.whitelisting%</argument>
         </service>
     </services>
-    -->
 </container>

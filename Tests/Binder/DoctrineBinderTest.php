@@ -134,7 +134,7 @@ class DoctrineBinderTest extends WebTestCase
         $user->setUsername("uklawitter");
         $user->setDeletedAt($now->getTimestamp());
 
-        $data = DoctrineBinder::create($this->em)
+        $data = DoctrineBinder::create($this->em, false)
             ->bind($user)
             ->except("deletedAt")
             ->execute();
@@ -186,49 +186,31 @@ class DoctrineBinderTest extends WebTestCase
         $this->assertEquals(array(), $result);
     }
 
-//    public function testBindArrayToEntityWithJoin() {
-//        $user = UserMock::create();
-//        $group1 = GroupMock::create();
-//        $group2 = GroupMock::create();
-//
-//        $this->em->persist($user);
-//        $this->em->persist($group1);
-//        $this->em->persist($group2);
-//        $this->em->flush();
-//
-//        $data = array("groups" => array(
-//            array("id" => $group1->getId()),
-//            array("id" => $group2->getId())
-//        ));
-//
-//        DoctrineBinder::create($this->em)
-//            ->bind($data)
-//            ->to($user)
-//            ->join("groups", DoctrineBinder::create($this->em))
-//            ->execute();
-//
-//        $this->assertEquals(2, count($user->getGroups()));
-//    }
+    public function testBindWithWhitelistEmpty() {
+        $now = new \DateTime();
 
-//    public function testBindUserWithGroups() {
-//        $user = UserMock::create("user1");
-//        $group1 = GroupMock::create("g1");
-//        $group2 = GroupMock::create("g2");
-//
-//        $user->addGroup($group1);
-//        $user->addGroup($group2);
-//
-//        $this->em->persist($user);
-//        $this->em->persist($group1);
-//        $this->em->persist($group2);
-//        $this->em->flush();
-//
-//        $data = array();
-//        $data["id"] = $user->getId();
-//        $data["groups"] = array(array("id"=>$group1->getId()));
-//
-//        DoctrineBinder::create($this->em)->bind($data)->to($user)->execute();
-//
-//        $this->assertEquals(1, count($user->getGroups()));
-//    }
+        $bind = new UserMock();
+        $bind->setUsername("uklawitter");
+        $bind->setDeletedAt($now);
+
+        $result = DoctrineBinder::create($this->em)->bind($bind)->execute();
+
+        $this->assertEquals(0, count($result));
+    }
+
+    public function testBindWithWhitelistWithFields() {
+        $now = new \DateTime();
+
+        $bind = new UserMock();
+        $bind->setUsername("uklawitter");
+        $bind->setDeletedAt($now);
+
+        $result = GetMethodBinder::create(true)
+            ->bind($bind)
+            ->field("username")
+            ->execute();
+
+        $this->assertEquals(1, count($result));
+        $this->assertEquals($bind->getUsername(), $result["username"]);
+    }
 }

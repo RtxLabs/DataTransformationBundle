@@ -12,13 +12,20 @@ class GetMethodBinder implements IBinder {
     private $joins = array();
     private $to;
 
+    private $whitelisting;
+
     /**
      * @static
      * @return \RtxLabs\DataTransformationBundle\Binder\GetMethodBinder
      */
-    public static function create()
+    public static function create($whitelisting=true)
     {
-        return new self();
+        return new self($whitelisting);
+    }
+
+    public function __construct($whitelisting=true)
+    {
+        $this->whitelisting = $whitelisting;
     }
 
     /**
@@ -40,7 +47,7 @@ class GetMethodBinder implements IBinder {
      * @param $closure
      * @return GetMethodBinder
      */
-    public function field($field, $closure) {
+    public function field($field, $closure=null) {
         $this->fields[$field] = $closure;
         return $this;
     }
@@ -94,14 +101,18 @@ class GetMethodBinder implements IBinder {
                 $reflection = new \ReflectionObject($this->bind);
 
                 foreach ($reflection->getMethods() as $method) {
+                    //TODO: remove methodReturnsSymfonyCollection
                     if ($this->isGetter($method)
                         && !$this->methodReturnsSymfonyCollection($method)) {
 
                         $fieldName = lcfirst(substr($method->getName(), 3));
 
-                        if (!in_array($fieldName, $this->except)) {
-                            $binder->field($fieldName);
+                        if ($this->isWhitelisted($fieldName)) {
+                            if (!in_array($fieldName, $this->except)) {
+                                $binder->field($fieldName);
+                            }
                         }
+
                     }
                 }
 
@@ -156,5 +167,14 @@ class GetMethodBinder implements IBinder {
         }
 
         return $result;
+    }
+
+    private function isWhitelisted($field)
+    {
+        if ($this->whitelisting) {
+            return array_key_exists($field, $this->fields);
+        }
+
+        return true;
     }
 }

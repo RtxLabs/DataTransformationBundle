@@ -12,22 +12,20 @@ class DoctrineBinder implements IBinder {
      */
     private $em;
 
-    /**
-     * @var \RtxLabs\DataTransformationBundle\Binder\GetMethodBinder
-     */
-    private $binder;
-
     private $bind;
     private $to;
     private $fields = array();
     private $except = array();
     private $joins = array();
 
+    private $whitelisting;
+
     /**
      * @param $em \Doctrine\ORM\EntityManager
      */
-    private function __construct($em)
+    public function __construct($em, $whitelisting=true)
     {
+        $this->whitelisting = $whitelisting;
         $this->em = $em;
     }
 
@@ -35,9 +33,9 @@ class DoctrineBinder implements IBinder {
      * @static
      * @return \RtxLabs\DataTransformationBundle\Binder\DoctrineBinder
      */
-    public static function create($em)
+    public static function create($em, $whitelisting=true)
     {
-        return new self($em);
+        return new self($em, $whitelisting);
     }
 
     public function bind($object)
@@ -85,7 +83,7 @@ class DoctrineBinder implements IBinder {
             return null;
         }
 
-        $getMethodBinder = GetMethodBinder::create()->bind($this->bind)->to($this->to);
+        $getMethodBinder = GetMethodBinder::create($this->whitelisting)->bind($this->bind)->to($this->to);
 
         if ($this->bind instanceof PersistentCollection) {
             $getMethodBinder->bind($this->bind->toArray());

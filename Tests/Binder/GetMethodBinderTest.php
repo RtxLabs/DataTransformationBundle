@@ -30,7 +30,7 @@ class GetMethodBinderTest extends \PHPUnit_Framework_TestCase
         $array[2] = new EntityDummyWithoutId();
         $array[2]->setFirstName("Harald");
 
-        $result = GetMethodBinder::create()->bind($array)->execute();
+        $result = GetMethodBinder::create(false)->bind($array)->execute();
 
         $this->assertEquals(3, count($result));
         $this->assertEquals(4, count($result[2]));
@@ -71,7 +71,7 @@ class GetMethodBinderTest extends \PHPUnit_Framework_TestCase
         $bind->setUsername("uklawitter");
         $bind->setDeletedAt($now->format("r"));
 
-        $result = GetMethodBinder::create()
+        $result = GetMethodBinder::create(false)
             ->bind($bind)
             ->except("deletedAt")
             ->execute();
@@ -83,6 +83,34 @@ class GetMethodBinderTest extends \PHPUnit_Framework_TestCase
     public function testBindEmptyArray() {
         $result = GetMethodBinder::create()->bind(array())->execute();
         $this->assertEquals(array(), $result);
+    }
+
+    public function testBindWithWhitelistEmpty() {
+        $now = new \DateTime();
+
+        $bind = new UserMock();
+        $bind->setUsername("uklawitter");
+        $bind->setDeletedAt($now);
+
+        $result = GetMethodBinder::create(true)->bind($bind)->execute();
+
+        $this->assertEquals(0, count($result));
+    }
+
+    public function testBindWithWhitelistWithFields() {
+        $now = new \DateTime();
+
+        $bind = new UserMock();
+        $bind->setUsername("uklawitter");
+        $bind->setDeletedAt($now);
+
+        $result = GetMethodBinder::create(true)
+            ->bind($bind)
+            ->field("username")
+            ->execute();
+
+        $this->assertEquals(1, count($result));
+        $this->assertEquals($bind->getUsername(), $result["username"]);
     }
 
     private function assertBound($value, $property, $entity)

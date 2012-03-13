@@ -29,14 +29,13 @@ class Binder implements IBinder {
              $result = $this->to;
         }
 
-        //todo: rename from to bind
-
         if (is_null($this->bind)) {
             $result = null;
         }
         elseif ($this->isIterable($this->bind)) {
             foreach ($this->bind as $item) {
-                $result[] = $this->copy()->bind($item)->execute();
+                $subBinder = clone $this;
+                $result[] = $subBinder->bind($item)->execute();
             }
         }
         else {
@@ -70,6 +69,8 @@ class Binder implements IBinder {
      */
     private function isIterable($object)
     {
+        //TODO: reorder public /private
+
         if (is_array($object) && !$this->isAssocArray($object)) {
             return true;
         }
@@ -136,18 +137,6 @@ class Binder implements IBinder {
     public function to($entity) {
         $this->to = $entity;
         return $this;
-    }
-
-    /**
-     * @return Binder
-     */
-    private function copy() {
-        $copy = new Binder();
-        $copy->fields = $this->fields;
-        $copy->joins = $this->joins;
-        $copy->bind = $this->bind;
-
-        return $copy;
     }
 
     /**
