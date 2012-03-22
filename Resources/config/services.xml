@@ -11,13 +11,13 @@
     <services>
         <service id="rtxlabs.datatransformation.doctrinebinder"
                 class="RtxLabs\DataTransformationBundle\Binder\DoctrineBinder"
-                scope="request">
+                scope="prototype">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%rtxlabs_datatransformation.whitelisting%</argument>
         </service>
         <service id="rtxlabs.datatransformation.getmethodbinder"
                 class="RtxLabs\DataTransformationBundle\Binder\GetMethodBinder"
-                scope="request">
+                scope="prototype">
             <argument>%rtxlabs_datatransformation.whitelisting%</argument>
         </service>
     </services>
