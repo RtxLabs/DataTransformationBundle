@@ -110,6 +110,10 @@ class DoctrineBinder implements IBinder {
                     $modifiedBind[$field] = $date;
                 }
                 elseif ($value != null && $metaData->isSingleValuedAssociation($field)) {
+                    if ($value instanceof \stdClass) {
+                        $value = $value->id;
+                    }
+
                     $modifiedBind[$field] = $this->em->getReference($metaData->getAssociationTargetClass($field), $value);
                 }
                 else {
