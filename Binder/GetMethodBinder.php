@@ -94,7 +94,9 @@ class GetMethodBinder implements IBinder {
             }
 
             foreach ($this->bind as $key=>$value) {
-                $binder->field($key, $value);
+                if (!in_array($key, $this->except)) {
+                    $binder->field($key, $value);
+                }
             }
 
             if (is_object($this->bind)) {
@@ -120,11 +122,6 @@ class GetMethodBinder implements IBinder {
                     if ($property->isPublic() && !in_array($property->getName(), $this->except)) {
                         $binder->field($property->getName());
                     }
-                }
-            }
-            elseif ($this->isAssocArray($this->bind)) {
-                foreach ($this->bind as $key=>$value) {
-                    $binder->field($key, $value);
                 }
             }
 
@@ -158,7 +155,6 @@ class GetMethodBinder implements IBinder {
         $result = true;
 
         if (substr($method->getName(), 0, 3) != "get") {
-
             $result = false;
         }
 
