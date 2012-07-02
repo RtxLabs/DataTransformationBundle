@@ -150,7 +150,7 @@ class GetMethodBinder implements IBinder {
         }
     }
 
-    private function isGetter($method)
+    private function isGetter(\ReflectionMethod $method)
     {
         $result = true;
 
@@ -159,6 +159,10 @@ class GetMethodBinder implements IBinder {
         }
 
         if (!$method->isPublic()) {
+            $result = false;
+        }
+
+        if (!$method->getNumberOfRequiredParameters() == 0) {
             $result = false;
         }
 
