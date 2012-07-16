@@ -64,7 +64,7 @@ class GetMethodBinderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($closure($bind), $result["calc"]);
     }
 
-    public function testExcept() {
+    public function testExcept01() {
         $now = new \DateTime();
 
         $bind = new UserMock();
@@ -78,6 +78,23 @@ class GetMethodBinderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($bind->getUsername(), $result["username"]);
         $this->assertArrayNotHasKey("deletedAt", $result);
+    }
+
+    public function testExcept02()
+    {
+        $bind = new \stdClass();
+        $bind->username = 'hans';
+        $bind->deletedAt = new \DateTime();
+        $userMock = new UserMock();
+
+        GetMethodBinder::create(false)
+            ->bind($bind)
+            ->to($userMock)
+            ->except('deletedAt')
+            ->execute();
+
+        $this->assertEquals($bind->username, $userMock->getUsername());
+        $this->assertNull($userMock->getDeletedAt());
     }
 
     public function testBindEmptyArray() {

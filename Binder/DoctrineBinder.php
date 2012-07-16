@@ -98,7 +98,10 @@ class DoctrineBinder implements IBinder {
                 $metaData = $this->em->getClassMetadata($reflection->getName());
                 $fieldType = $metaData->getTypeOfField($field);
 
-                if ($value != null && $fieldType == Type::DATETIME || $fieldType == Type::DATE || $fieldType == Type::TIME) {
+                if ($value != null && $fieldType == Type::DATETIME
+                        || $fieldType == Type::DATE
+                        || $fieldType == Type::TIME) {
+
                     if ($value < 1) {
                         $date = null;
                     }
@@ -124,7 +127,10 @@ class DoctrineBinder implements IBinder {
             $getMethodBinder->bind($modifiedBind);
         }
 
-        if (is_object($this->bind) && !($this->bind instanceof \stdClass) && !($this->bind instanceof PersistentCollection)) {
+        if (is_object($this->bind)
+                && !($this->bind instanceof \stdClass)
+                && !($this->bind instanceof PersistentCollection)) {
+
             $reflection = new \ReflectionObject($this->bind);
             $metaData = $this->em->getClassMetadata($reflection->getName());
 
