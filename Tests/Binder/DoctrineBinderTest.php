@@ -205,7 +205,7 @@ class DoctrineBinderTest extends WebTestCase
         $bind->setUsername("uklawitter");
         $bind->setDeletedAt($now);
 
-        $result = GetMethodBinder::create(true)
+        $result = DoctrineBinder::create($this->em)
             ->bind($bind)
             ->field("username")
             ->execute();
