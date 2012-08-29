@@ -43,7 +43,7 @@ class GetMethodBinderTest extends \PHPUnit_Framework_TestCase
         $bind = array("firstName"=>"Uwe", "lastName"=>"Klawitter");
         $to = new EntityDummy();
 
-        GetMethodBinder::create()->bind($bind)->to($to)->execute();
+        GetMethodBinder::create(false)->bind($bind)->to($to)->execute();
 
         $this->assertEquals($bind["firstName"], $to->getFirstName());
         $this->assertEquals($bind["lastName"], $to->getLastName());

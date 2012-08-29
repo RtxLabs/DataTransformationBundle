@@ -69,7 +69,7 @@ class DoctrineBinderTest extends WebTestCase
 
         $user = new UserMock();
 
-        DoctrineBinder::create($this->em)->bind($data)->to($user)->execute();
+        DoctrineBinder::create($this->em, false)->bind($data)->to($user)->execute();
 
         $this->assertEquals($data->username, $user->getUsername());
         $this->assertEquals($now->getTimestamp(), $user->getDeletedAt()->getTimestamp());
