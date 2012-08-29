@@ -94,7 +94,7 @@ class GetMethodBinder implements IBinder {
             }
 
             foreach ($this->bind as $key=>$value) {
-                if (!in_array($key, $this->except)) {
+                if ($this->isWhitelisted($key) && !in_array($key, $this->except)) {
                     $binder->field($key, $value);
                 }
             }
@@ -109,17 +109,18 @@ class GetMethodBinder implements IBinder {
 
                         $fieldName = lcfirst(substr($method->getName(), 3));
 
-                        if ($this->isWhitelisted($fieldName)) {
-                            if (!in_array($fieldName, $this->except)) {
-                                $binder->field($fieldName);
-                            }
+                        if ($this->isWhitelisted($fieldName) && !in_array($fieldName, $this->except)) {
+                            $binder->field($fieldName);
                         }
 
                     }
                 }
 
                 foreach ($reflection->getProperties() as $property) {
-                    if ($property->isPublic() && !in_array($property->getName(), $this->except)) {
+                    if ($property->isPublic()
+                            && $this->isWhitelisted($property->getName())
+                            && !in_array($property->getName(), $this->except)) {
+
                         $binder->field($property->getName());
                     }
                 }
