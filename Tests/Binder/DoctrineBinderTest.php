@@ -26,8 +26,6 @@ class DoctrineBinderTest extends WebTestCase
 
     public function setUp()
     {
-        $kernel = static::createKernel();
-        $kernel->boot();
         $application = new Application($kernel);
 
         $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
@@ -46,7 +44,6 @@ class DoctrineBinderTest extends WebTestCase
 
         $this->em->getConfiguration()->setEntityNamespaces(array(
             'RotexSbpCoreBundle' => 'Rotex\\Sbp\\CoreBundle\\Tests\\Mockups\\Entity'
-
         ));
 
         TestHelper::initDatabase($application, false);
