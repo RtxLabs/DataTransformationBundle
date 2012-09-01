@@ -43,7 +43,7 @@ class GetMethodBinderTest extends \PHPUnit_Framework_TestCase
         $bind = array("firstName"=>"Uwe", "lastName"=>"Klawitter");
         $to = new EntityDummy();
 
-        GetMethodBinder::create()->bind($bind)->to($to)->execute();
+        GetMethodBinder::create(false)->bind($bind)->to($to)->execute();
 
         $this->assertEquals($bind["firstName"], $to->getFirstName());
         $this->assertEquals($bind["lastName"], $to->getLastName());
@@ -128,6 +128,28 @@ class GetMethodBinderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, count($result));
         $this->assertEquals($bind->getUsername(), $result["username"]);
+    }
+
+    public function testBindWithWhitelistingWithFieldsTo() {
+        $dateNow = new \DateTime();
+        $dateBefore = new \DateTime("-1 hour");
+
+        $user = new UserMock();
+        $user->setUsername("thaberkern");
+        $user->setDeletedAt($dateBefore);
+
+        $data = new \stdClass();
+        $data->username = "uklawitter";
+        $data->deletedAt = $dateNow;
+
+        GetMethodBinder::create(true)
+            ->bind($data)
+            ->field("username")
+            ->to($user)
+            ->execute();
+
+        $this->assertEquals("uklawitter", $user->getUsername());
+        $this->assertEquals($dateBefore, $user->getDeletedAt());
     }
 
     private function assertBound($value, $property, $entity)

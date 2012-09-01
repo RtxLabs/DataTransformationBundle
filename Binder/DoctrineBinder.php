@@ -50,7 +50,7 @@ class DoctrineBinder implements IBinder {
         return $this;
     }
 
-    public function field($field, $value) {
+    public function field($field, $value=null) {
         $this->fields[$field] = $value;
         return $this;
     }
