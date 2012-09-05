@@ -23,6 +23,13 @@ class UserMock
     private $id;
 
     /**
+     * @var boolean $isAdmin
+     *
+     * @ORM\Column(name="isAdmin", type="boolean")
+     */
+    private $isAdmin = false;
+
+    /**
      * @var string $username
      *
      * @ORM\Column(name="username", type="string", length=255, unique=true)
@@ -134,6 +141,22 @@ class UserMock
     public function setCar($car)
     {
         $this->car = $car;
+    }
+
+    /**
+     * @return \RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\IsAdminMock
+     */
+    public function getIsAdmin()
+    {
+        return $this->isAdmin;
+    }
+
+    /**
+     * @param \RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\IsAdminMock $isAdmin
+     */
+    public function setIsAdmin($isAdmin)
+    {
+        $this->isAdmin = $isAdmin;
     }
 
     /**

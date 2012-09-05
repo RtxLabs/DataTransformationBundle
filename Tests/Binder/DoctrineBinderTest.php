@@ -92,6 +92,39 @@ class DoctrineBinderTest extends WebTestCase
         $this->assertEquals($data["name"], $user->getUsername());
     }
 
+    public function testBindToObjectWithEmptyString()
+    {
+        $data = array("car" => "");
+
+        $car = new CarMock();
+        $user = new UserMock();
+        $user->setCar($car);
+
+        DoctrineBinder::create($this->em)
+            ->bind($data)
+            ->field("car")
+            ->to($user)
+            ->execute();
+
+        $this->assertNull($user->getCar());
+    }
+
+    public function testBindToObjectWithBooleanEmptyString()
+    {
+        $data = array("isAdmin"=>false);
+
+        $user = new UserMock();
+        $user->setIsAdmin(true);
+
+        DoctrineBinder::create($this->em)
+            ->bind($data)
+            ->field("isAdmin")
+            ->to($user)
+            ->execute();
+
+        $this->assertFalse($user->getIsAdmin());
+    }
+
     public function testBindFieldToOverride()
     {
         $data = array();
