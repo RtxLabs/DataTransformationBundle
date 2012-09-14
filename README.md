@@ -13,7 +13,7 @@ something like that:
 ```json
 {
     "models"  :  [ {
-        "id" : 1181,"
+        "id" : 1181,
         "address" : null,
         "email" : "mail7@sbpdemo.de",
         "firstname" : "Firstname7",
