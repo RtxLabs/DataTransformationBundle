@@ -5,7 +5,7 @@ This bundle contains some "Binders" that can be used to convert for example Doct
 Sounds not very spectacular, but if you want to provide some REST services to read or manipulate your Doctrine
 entities, this bundle can help you a lot.
 
-## Example 1:
+## Example:
 
 You want to provide a REST service that returns a list of contacts linked with companies. The service has to deliver
 something like that:
@@ -152,11 +152,11 @@ json very easily.
 
 Its also possible to modify some data or calculate something before returning it, but I think that has to be explained
 in the documentation. Another cool feature is the ability to bind the data given by a request and
-bind it to an existing or new entity. So if I drew your interest, I would recommend that you install the
-bundle and try to bind some Data.
+bind it to an existing or new entity. So if the bundle drew your interest, I would recommend that you install the
+bundle and try to bind some Data ;)
 
 - [Installation](DataTransformationBundle/tree/master/Resources/doc/installation.md)
-- Using the [Binder](DataTransformationBundle/tree/master/Resources/doc/installation.md)
+- Using the [Binder](DataTransformationBundle/tree/master/Resources/doc/binder.md)
 - Using the [GetMethodBinder](DataTransformationBundle/tree/master/Resources/doc/get_method_binder.md)
 - Using the [DoctrineBinder](DataTransformationBundle/tree/master/Resources/doc/doctrine_binder.md)
 
