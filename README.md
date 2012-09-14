@@ -155,8 +155,8 @@ in the documentation. Another cool feature is the ability to bind the data given
 bind it to an existing or new entity. So if I drew your interest, I would recommend that you install the
 bundle and try to bind some Data.
 
-- [Installation](tree/master/Resources/doc/installation.md)
-- Using the [Binder](tree/master/Resources/doc/installation.md)
+- [Installation](DataTransformationBundle/tree/master/Resources/doc/installation.md)
+- Using the [Binder](DataTransformationBundle/tree/master/Resources/doc/installation.md)
 - Using the [GetMethodBinder](DataTransformationBundle/tree/master/Resources/doc/get_method_binder.md)
 - Using the [DoctrineBinder](DataTransformationBundle/tree/master/Resources/doc/doctrine_binder.md)
 
