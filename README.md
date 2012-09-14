@@ -156,8 +156,8 @@ bundle and try to bind some Data.
 
 - [Installation](tree/master/Resources/doc/installation.md)
 - Using the [Binder](tree/master/Resources/doc/installation.md)
-- Using the [GetMethodBinder](tree/master/Resources/doc/get_method_binder.md)
-- Using the [DoctrineBinder](tree/master/Resources/doc/doctrine_binder.md)
+- Using the [GetMethodBinder](DataTransformationBundle/tree/master/Resources/doc/get_method_binder.md)
+- Using the [DoctrineBinder](DataTransformationBundle/tree/master/Resources/doc/doctrine_binder.md)
 
 Changelog
 =========
