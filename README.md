@@ -12,38 +12,39 @@ something like that:
 
 ```json
 {
-    "models":[{
-        "id":1181,"
-        "address":null,
-        "email":"mail7@sbpdemo.de",
-        "firstname":"Firstname7",
-        "lastname":"Lastname7",
-        "company":{
-            "id":298,
-            "name":"Company 0",
-            "address":{
-                "id":458,
-                "city":"City1",
-                "street":"Street 1"
+    "models"  :  [ {
+        "id" : 1181,"
+        "address" : null,
+        "email" : "mail7@sbpdemo.de",
+        "firstname" : "Firstname7",
+        "lastname" : "Lastname7",
+        "company"  :  {
+            "id" : 298,
+            "name" : "Company 0",
+            "address" : {
+                "id" : 458,
+                "city" : "City1",
+                "street" : "Street 1"
             }
         }
-    },{
-        "id":1177,
-        "address":null,
-        "email":"mail3@sbpdemo.de",
-        "firstname":"Firstname3",
-        "lastname":"Lastname3",
-        "company":{
-            "id":298,
-            "name":"Company 0",
-            "address":{
-                "id":458,
-                "city":"City1",
-                "street":"Street 1"
+    } , {
+        "id" : 1177,
+        "address" : null,
+        "email" : "mail3@sbpdemo.de",
+        "firstname" : "Firstname3",
+        "lastname" : "Lastname3",
+        "company" : {
+            "id" : 298,
+            "name" : "Company 0",
+            "address" : {
+                "id" : 458,
+                "city" : "City1",
+                "street" : "Street 1"
             }
         }
-    }]
-    ,"count":"2"}
+    } ],
+    "count" : "2"
+}
 ```
 
 Thats how I would do it without the DataTransformationBundle:
