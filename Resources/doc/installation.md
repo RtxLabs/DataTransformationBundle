@@ -60,5 +60,4 @@ public function registerBundles()
 
 ## Next Steps
 
-//TODO: Getting Started -> Next Steps
-Learn how to use the Binder, GetMethodBinder and the DoctrineBinder.
+- Using the [Binder](DataTransformationBundle/tree/master/Resources/doc/binder.md)

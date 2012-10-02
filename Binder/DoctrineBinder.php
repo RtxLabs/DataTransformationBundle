@@ -4,7 +4,6 @@ namespace RtxLabs\DataTransformationBundle\Binder;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\PersistentCollection;
 
 class DoctrineBinder implements IBinder {
 
@@ -86,7 +85,7 @@ class DoctrineBinder implements IBinder {
 
         $getMethodBinder = GetMethodBinder::create($this->whitelisting)->bind($this->bind)->to($this->to);
 
-        if ($this->bind instanceof PersistentCollection) {
+        if ($this->bind instanceof \Doctrine\Common\Collections\Collection) {
             $getMethodBinder->bind($this->bind->toArray());
         }
 
@@ -116,7 +115,7 @@ class DoctrineBinder implements IBinder {
 
         if (is_object($this->bind)
                 && !($this->bind instanceof \stdClass)
-                && !($this->bind instanceof PersistentCollection)) {
+                && !($this->bind instanceof \Doctrine\Common\Collections\Collection)) {
 
             $reflection = new \ReflectionObject($this->bind);
             $metaData = $this->em->getClassMetadata($reflection->getName());
