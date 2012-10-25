@@ -242,8 +242,6 @@ class Binder implements IBinder {
         }
     }
 
-
-
     /**
      * @param \ReflectionObject $reflection
      * @param string $field
