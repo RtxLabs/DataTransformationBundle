@@ -96,7 +96,10 @@ class DoctrineBinder implements IBinder {
             $metaData = $this->em->getClassMetadata($reflection->getName());
 
             foreach ($this->bind as $field=>$value) {
-                if ($value === null) {
+                if ($this->whitelisting && !array_key_exists($field, $this->fields)) {
+                    $modifiedBind[$field] = $value;
+                }
+                elseif ($value === null) {
                     $modifiedBind[$field] = null;
                 }
                 elseif ($this->isDateTime($field, $metaData)) {
