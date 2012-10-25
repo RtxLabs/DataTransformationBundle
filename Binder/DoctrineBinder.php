@@ -150,12 +150,7 @@ class DoctrineBinder implements IBinder {
     {
         $id = $value;
         if ($value instanceof \stdClass) {
-            if (property_exists($value, "id")) {
-                $id = $value->id;
-            }
-            else {
-                $id = 0;
-            }
+            $id = $value->id;
         }
 
         $id = intval($id);
