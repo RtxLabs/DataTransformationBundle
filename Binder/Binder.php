@@ -19,7 +19,7 @@ class Binder implements IBinder {
     /**
      * Binds the object defined in 'from' to an object.
      * @throws LogicException
-     * @return Object
+     * @return mixed stdClass if the "to()" method was not called. Otherwise the object defined in to will be returned.
      */
     public function execute()
     {
@@ -86,7 +86,17 @@ class Binder implements IBinder {
     }
 
     private function isAssocArray($value) {
-        return is_array($this->bind) && array_values($value) !== $value;
+        if (!is_array($value)) {
+            return true;
+        }
+
+        foreach ($value as $key=>$item) {
+            if (is_string($key)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -231,8 +241,6 @@ class Binder implements IBinder {
             return null;
         }
     }
-
-
 
     /**
      * @param \ReflectionObject $reflection

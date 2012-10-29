@@ -103,10 +103,7 @@ class GetMethodBinder implements IBinder {
                 $reflection = new \ReflectionObject($this->bind);
 
                 foreach ($reflection->getMethods() as $method) {
-                    //TODO: remove methodReturnsSymfonyCollection
-                    if ($this->isGetter($method)
-                        && !$this->methodReturnsSymfonyCollection($method)) {
-
+                    if ($this->isGetter($method)) {
                         $fieldName = lcfirst(substr($method->getName(), 3));
 
                         if ($this->isWhitelisted($fieldName) && !in_array($fieldName, $this->except)) {
@@ -132,23 +129,19 @@ class GetMethodBinder implements IBinder {
         return $result;
     }
 
-    public function isAssocArray($array)
+    public function isAssocArray($value)
     {
-        return is_array($array) && array_values($array) !== $array;
-    }
+        if (!is_array($value)) {
+            return true;
+        }
 
-    /**
-     * @param \ReflectionMethod $method
-     * @return boolean
-     */
-    private function methodReturnsSymfonyCollection($method)
-    {
-        if (strpos($method->getDocComment(), '@return Doctrine\Common\Collections\Collection') !== false) {
-            return false;
+        foreach ($value as $key=>$item) {
+            if (is_string($key)) {
+                return true;
+            }
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     private function isGetter(\ReflectionMethod $method)

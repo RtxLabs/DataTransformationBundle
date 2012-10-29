@@ -2,8 +2,8 @@
 namespace RtxLabs\DataTransformationBundle\Binder;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\PersistentCollection;
 
 class DoctrineBinder implements IBinder {
 
@@ -17,7 +17,7 @@ class DoctrineBinder implements IBinder {
     private $fields = array();
     private $except = array();
     private $joins = array();
-
+    private $metadata = null;
     private $whitelisting;
 
     /**
@@ -85,7 +85,7 @@ class DoctrineBinder implements IBinder {
 
         $getMethodBinder = GetMethodBinder::create($this->whitelisting)->bind($this->bind)->to($this->to);
 
-        if ($this->bind instanceof PersistentCollection) {
+        if ($this->bind instanceof \Doctrine\Common\Collections\Collection) {
             $getMethodBinder->bind($this->bind->toArray());
         }
 
@@ -93,31 +93,20 @@ class DoctrineBinder implements IBinder {
             $modifiedBind = array();
 
             $reflection = new \ReflectionObject($this->to);
+            $metaData = $this->em->getClassMetadata($reflection->getName());
 
             foreach ($this->bind as $field=>$value) {
-                $metaData = $this->em->getClassMetadata($reflection->getName());
-                $fieldType = $metaData->getTypeOfField($field);
-
-                if ($value != null && $fieldType == Type::DATETIME
-                        || $fieldType == Type::DATE
-                        || $fieldType == Type::TIME) {
-
-                    if ($value < 1) {
-                        $date = null;
-                    }
-                    else {
-                        $date = new \DateTime();
-                        $date->setTimestamp($value);
-                    }
-
-                    $modifiedBind[$field] = $date;
+                if ($this->whitelisting && !array_key_exists($field, $this->fields)) {
+                    $modifiedBind[$field] = $value;
                 }
-                elseif ($value != null && $metaData->isSingleValuedAssociation($field)) {
-                    if ($value instanceof \stdClass) {
-                        $value = $value->id;
-                    }
-
-                    $modifiedBind[$field] = $this->em->getReference($metaData->getAssociationTargetClass($field), $value);
+                elseif ($value === null) {
+                    $modifiedBind[$field] = null;
+                }
+                elseif ($this->isDateTime($field, $metaData)) {
+                    $modifiedBind[$field] = $this->getDateTime($value);
+                }
+                elseif ($metaData->isSingleValuedAssociation($field)) {
+                    $modifiedBind[$field] = $this->getReference($value, $field, $metaData);
                 }
                 else {
                     $modifiedBind[$field] = $value;
@@ -129,7 +118,7 @@ class DoctrineBinder implements IBinder {
 
         if (is_object($this->bind)
                 && !($this->bind instanceof \stdClass)
-                && !($this->bind instanceof PersistentCollection)) {
+                && !($this->bind instanceof \Doctrine\Common\Collections\Collection)) {
 
             $reflection = new \ReflectionObject($this->bind);
             $metaData = $this->em->getClassMetadata($reflection->getName());
@@ -158,5 +147,43 @@ class DoctrineBinder implements IBinder {
         }
 
         return $getMethodBinder->execute();
+    }
+
+    public function getReference($value, $field, $metaData)
+    {
+        $id = $value;
+        if ($value instanceof \stdClass) {
+            $id = $value->id;
+        }
+
+        $id = intval($id);
+
+        if ($id < 1) {
+            return null;
+        }
+
+        $reference = $this->em->getReference($metaData->getAssociationTargetClass($field), $id);
+        return $reference;
+    }
+
+    private function getDateTime($value)
+    {
+        if ($value < 1) {
+            $date = null;
+            return $date;
+        } else {
+            $date = new \DateTime();
+            $date->setTimestamp($value);
+            return $date;
+        }
+    }
+
+    private function isDateTime($field, ClassMetadata $metaData)
+    {
+        $fieldType = $metaData->getTypeOfField($field);
+
+        return $fieldType == Type::DATETIME
+            || $fieldType == Type::DATE
+            || $fieldType == Type::TIME;
     }
 }
