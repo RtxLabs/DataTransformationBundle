@@ -1,13 +1,12 @@
-About
-=====
+DataTransformation Bundle
+=========================
 
-This bundle contains "Binders" that can be used to convert for example Doctrine2 entities into stdClass objects.
-Sounds not very spectacular, but if you want to provide some REST services to read or manipulate your Doctrine
-entities, this bundle can help you a lot.
+Symfony2 Bundle that can help building REST services.
 
-## Example:
+Example
+-------
 
-You want to provide a REST service that returns a list of contacts linked with companies. The service has to deliver
+Providing a REST service that returns a list of contacts linked with companies. The service has to deliver
 something like that:
 
 ```json
@@ -33,30 +32,29 @@ an json_encode() to on the entities won't work, because the entity contains prox
 solve this, the DoctrineBinder can be used:
 
 ```php
+// loading the entity manager to create the doctrine binder instance
 $em = $this->getDoctrine()->getEntityManager();
+
+// create a doctrine binder, bind the models that have been loaded before and execute the binder. The execute
+// method will iterate over the models and return an array containing stdClass objects with all values defined
+// by getters.
 $result = DoctrineBinder::create($em)->bind($models)->execute();
-$json = Dencoder::deno
-var_dump($result);
+
+// finally the result has to be converted into json to return it as an response
+$json = Dencoder::decode($result);
 ```
 
-In this example we simply bind
+In addition the binder can be used to:
+- calculate values before returning them //TODO add a link
+- bind request data to entities //TODO add a link
+- joining data of referenced models //TODO add a link
 
-Its cool, isn't it? The code is shorter, easier to understand an less error prone. We declared
-a DoctrineBinder and joined the address, the company and the address of the company.
-The joined entity will also be bound by a Binder, defined by the second join parameter.
-
-The result of DoctrineBinder->execute() will be an object of type stdClass that can be transformed into
-json very easily.
-
-Its also possible to modify some data or calculate something before returning it, but I think that has to be explained
-in the documentation. Another cool feature is the ability to bind the data given by a request and
-bind it to an existing or new entity. So if the bundle drew your interest, I would recommend that you install the
-bundle and try to bind some data ;)
+Documentation
+-------------
 
 - [Installation](DataTransformationBundle/tree/master/Resources/doc/installation.md)
-- Using the [Binder](DataTransformationBundle/tree/master/Resources/doc/binder.md)
+- Binding data from entity [Binder](DataTransformationBundle/tree/master/Resources/doc/binder.md)
 - Using the [GetMethodBinder](DataTransformationBundle/tree/master/Resources/doc/get_method_binder.md)
 - Using the [DoctrineBinder](DataTransformationBundle/tree/master/Resources/doc/doctrine_binder.md)
+- Using the [Dencoder](DataTransformationBundle/tree/master/Resources/doc/dencoder.md)
 
-Changelog
-=========

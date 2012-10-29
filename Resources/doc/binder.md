@@ -1,7 +1,7 @@
 The Binder Class
 ================
 
-The Binder is the most basic DataTransformationBundle and is used by the GetMethodBinder and the DoctrineBinder.
+The Binder is the most basic binder and is used by the GetMethodBinder and the DoctrineBinder.
 
 ## Example: Binding an object to stdClass object
 ´´´php
