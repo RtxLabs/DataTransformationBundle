@@ -1,6 +1,8 @@
 <?php
 namespace RtxLabs\DataTransformationBundle\Tests\Binder;
 
+require_once "{$_SERVER['KERNEL_DIR']}/AppKernel.php";
+
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Tests\OrmTestCase;
@@ -17,6 +19,8 @@ use RtxLabs\DataTransformationBundle\Tests\TestHelper;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+
+
 class DoctrineBinderTest extends WebTestCase
 {
     /**
@@ -26,8 +30,8 @@ class DoctrineBinderTest extends WebTestCase
 
     public function setUp()
     {
-        $application = new Application($kernel);
-
+        $kernel = new \AppKernel('test', true);
+        $kernel->boot();
         $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
 
         $reader = new AnnotationReader();
@@ -45,8 +49,6 @@ class DoctrineBinderTest extends WebTestCase
         $this->em->getConfiguration()->setEntityNamespaces(array(
             'RotexSbpCoreBundle' => 'Rotex\\Sbp\\CoreBundle\\Tests\\Mockups\\Entity'
         ));
-
-        TestHelper::initDatabase($application, false);
     }
 
     public function testExecute()
