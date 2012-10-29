@@ -53,8 +53,9 @@ Documentation
 -------------
 
 - [Installation](DataTransformationBundle/tree/master/Resources/doc/installation.md)
-- Binding data from entity [Binder](DataTransformationBundle/tree/master/Resources/doc/binder.md)
-- Using the [GetMethodBinder](DataTransformationBundle/tree/master/Resources/doc/get_method_binder.md)
-- Using the [DoctrineBinder](DataTransformationBundle/tree/master/Resources/doc/doctrine_binder.md)
-- Using the [Dencoder](DataTransformationBundle/tree/master/Resources/doc/dencoder.md)
+- [Binding objects / entities](DataTransformationBundle/tree/master/Resources/doc/binding_objects.md)
+- [Binding collections](DataTransformationBundle/tree/master/Resources/doc/binding_collections.md)
+- [Joining referenced entities](DataTransformationBundle/tree/master/Resources/doc/joining.md)
+- [Binding data to entities](DataTransformationBundle/tree/master/Resources/doc/binding_to_objects.md)
+- [Binding calculated values](DataTransformationBundle/tree/master/Resources/doc/calculation.md)
 
