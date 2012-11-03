@@ -14,16 +14,16 @@ looks like this:
     "id": 1181,
     "isAdmin": false,
     "username": "uklawitter",
-    "deletedAt": null
+    "deletedAt": null,
     "car": {
-        id: 7,
-        name: "Twinto"
+        "id": 7,
+        "name": "Twinto"
     }
 }, {
     "id": 1182,
     "isAdmin": true,
     "username": "thaberkern",
-    "deletedAt": null
+    "deletedAt": null,
     "car": null
 }]
 ```

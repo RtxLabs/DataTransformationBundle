@@ -13,13 +13,13 @@ the "bind" method instead of an singel object.
     "id": 1181,
     "isAdmin": false,
     "username": "uklawitter",
-    "deletedAt": null
+    "deletedAt": null,
     "car": 7
 }, {
     "id": 1182,
     "isAdmin": true,
     "username": "thaberkern",
-    "deletedAt": null
+    "deletedAt": null,
     "car": null
 }]
 ```

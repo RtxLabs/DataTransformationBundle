@@ -12,7 +12,7 @@ Supposted the entity structure looks like this:
     "id": 1181,
     "isAdmin": false,
     "username": "uklawitter",
-    "deletedAt": null
+    "deletedAt": null,
     "car": 7
 }
 ```
