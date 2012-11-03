@@ -58,4 +58,5 @@ Documentation
 - [Joining referenced entities](DataTransformationBundle/tree/master/Resources/doc/joining.md)
 - [Binding data to entities](DataTransformationBundle/tree/master/Resources/doc/binding_to_objects.md)
 - [Binding calculated values](DataTransformationBundle/tree/master/Resources/doc/calculation.md)
+- [Encode and decode bound values](DataTransformationBundle/tree/master/Resources/doc/dencoder.md)
 
