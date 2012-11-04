@@ -15,6 +15,7 @@ class GetMethodBinder implements IBinder {
     private $whitelisting;
 
     /**
+     * @see DoctrineBinder::create()
      * @static
      * @return \RtxLabs\DataTransformationBundle\Binder\GetMethodBinder
      */
@@ -23,12 +24,17 @@ class GetMethodBinder implements IBinder {
         return new self($whitelisting);
     }
 
+    /**
+     * @see GetMethodBinder::create()
+     */
     public function __construct($whitelisting=true)
     {
         $this->whitelisting = $whitelisting;
     }
 
     /**
+     * @see Binder::bind()
+     * @param object|array $entity
      * @return \RtxLabs\DataTransformationBundle\Binder\GetMethodBinder
      */
     public function bind($entity)
@@ -37,12 +43,18 @@ class GetMethodBinder implements IBinder {
         return $this;
     }
 
+    /**
+     * @see DoctrineBinder::except()
+     * @param string $field
+     * @return GetMethodBinder
+     */
     public function except($field) {
         $this->except[] = $field;
         return $this;
     }
 
     /**
+     * @see Binder::field()
      * @param $field
      * @param $closure
      * @return GetMethodBinder
@@ -52,12 +64,19 @@ class GetMethodBinder implements IBinder {
         return $this;
     }
 
+    /**
+     * @see Binder::join()
+     * @param string $field
+     * @param IBinder $binder
+     * @return GetMethodBinder
+     */
     public function join($field, $binder) {
         $this->joins[$field] = $binder;
         return $this;
     }
 
     /**
+     * @see Binder::to()
      * @param object $entity
      * @return GetMethodBinder
      */
@@ -67,7 +86,8 @@ class GetMethodBinder implements IBinder {
     }
 
     /**
-     * @return object
+     * @see Binder::execute()
+     * @return object|array
      */
     public function execute()
     {
@@ -129,7 +149,7 @@ class GetMethodBinder implements IBinder {
         return $result;
     }
 
-    public function isAssocArray($value)
+    private function isAssocArray($value)
     {
         if (!is_array($value)) {
             return true;

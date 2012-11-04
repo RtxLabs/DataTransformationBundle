@@ -100,6 +100,10 @@ class Binder implements IBinder {
     }
 
     /**
+     * Defines a field that has to be returned in the bound result if execute will be called. The $closure will be
+     * called if the field has to be created an the returned value will be the value of the field. If $closure
+     * is null, the value of the object given in the "bind" method will be the value.
+     *
      * @param string $field
      * @param closure $closure
      * @return Binder
@@ -113,6 +117,12 @@ class Binder implements IBinder {
         return $this;
     }
 
+    /**
+     * $binder->fields(array("a", "b", "c")) is a shortcut for $binder->field("a")->field("b")->field("c")
+     *
+     * @param array $fields
+     * @return Binder
+     */
     public function fields($fields) {
         foreach ($fields as $field) {
             $this->field($field);
@@ -122,17 +132,21 @@ class Binder implements IBinder {
     }
 
     /**
+     * The given field will be bound by calling the execute method of the given binder.
+     *
      * @param string $field
      * @param \RtxLabs\DataTransformationBundle\Binder\IBinder $binder
      * @return \RtxLabs\DataTransformationBundle\Binder\Binder
      */
-    public function join($field, $binder) {
+    public function join($field, IBinder $binder) {
         $this->joins[$field] = $binder;
         return $this;
     }
 
     /**
-     * @param $entity the entity to bind
+     * Defines the object that has to be bound if the execute method is called.
+     *
+     * @param mixed $entity the entity or array to bind
      * @return Binder
      */
     public function bind($entity) {
@@ -141,6 +155,8 @@ class Binder implements IBinder {
     }
 
     /**
+     * Defines the target object where the object given by "bind" has to be bound.
+     *
      * @param object $entity
      * @return Binder
      */

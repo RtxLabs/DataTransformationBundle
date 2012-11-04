@@ -11,7 +11,12 @@ class Dencoder {
         return json_encode(self::flatten($object));
     }
 
+    /**
+     * @param string $data
+     * @return stdClass
+     */
     public static function decode($data) {
+        assert(is_string($data));
         return json_decode($data);
     }
 
