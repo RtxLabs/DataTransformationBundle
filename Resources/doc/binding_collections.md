@@ -1,29 +1,36 @@
-Binding Objects
-===============
+Binding Collections
+===================
 
-Supposted the entity structure looks like this:
+Binding collections works exactly like binding objects with the difference that collections have to be given to
+the "bind" method instead of an singel object.
 
 ![class diagram](http://yuml.me/diagram/scruffy;/class/[Car|id;name], [Group|id;name], [User|id;isAdmin;username;deletedAt]->drives 0..1[Car], [User]->groups *[Group], [User]->deletedBy 0..1[User])
 
 ... and this should be the result returned by the service:
 
 ```json
-{
+[{
     "id": 1181,
     "isAdmin": false,
     "username": "uklawitter",
     "deletedAt": null,
     "car": 7
-}
+}, {
+    "id": 1182,
+    "isAdmin": true,
+    "username": "thaberkern",
+    "deletedAt": null,
+    "car": null
+}]
 ```
 
-Example: Binder
+Binding with Binder
 -------------------
 
 ```php
-$user = $repository->findOneById(1181);
+$users = $repository->findAll();
 $stdClass = Binder::create()
-    ->bind($user)
+    ->bind($users)
     ->fields("id", "isAdmin", "username", "deletedAt")
     ->field("car", function($user) {
         $car = $user->getCar();
@@ -37,13 +44,13 @@ $stdClass = Binder::create()
 $json = Dencoder::decode($stdClass);
 ```
 
-Example: GetMethodBinder
+Binding with GetMethodBinder
 ----------------------------
 
 ```php
-$user = $repository->findOneById(1181);
+$users = $repository->findAll();
 $stdClass = GetMethodBinder::create(false)
-    ->bind($user)
+    ->bind($users)
     ->field("car", function($user) {
         $car = $user->getCar();
         if ($car) {
@@ -56,11 +63,11 @@ $stdClass = GetMethodBinder::create(false)
 $json = Dencoder::decode($stdClass);
 ```
 
-Example: DoctrineBinder
+Binding with DoctrineBinder
 ---------------------------
 
 ```php
-$user = $repository->findOneById(1181);
-$stdClass = DoctrineBinder::create(false)->bind($user)->execute();
+$users = $repository->findAll();
+$stdClass = DoctrineBinder::create(false)->bind($users)->execute();
 $json = Dencoder::decode($stdClass);
 ```

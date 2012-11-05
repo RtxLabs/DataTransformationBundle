@@ -22,6 +22,9 @@ class DoctrineBinder implements IBinder {
 
     /**
      * @param $em \Doctrine\ORM\EntityManager
+     * @param boolean $whitelisting if whitelisting is true, the fields that has to be bound has to be defined by
+     *                              calling the "field" method.
+     * @return DoctrineBinder
      */
     public function __construct($em, $whitelisting=true)
     {
@@ -38,18 +41,37 @@ class DoctrineBinder implements IBinder {
         return new self($em, $whitelisting);
     }
 
+    /**
+     * @see Binder::bind()
+     *
+     * @param mixed $entity the entity or array to bind
+     * @return DoctrineBinder
+     */
     public function bind($object)
     {
         $this->bind = $object;
         return $this;
     }
 
+    /**
+     * @see Binder::to()
+     *
+     * @param $object
+     * @return DoctrineBinder
+     */
     public function to($object)
     {
         $this->to = $object;
         return $this;
     }
 
+    /**
+     * @see Binder::field()
+     *
+     * @param string $field
+     * @param closure $closure
+     * @return DoctrineBinder
+     */
     public function field($field, $value=null) {
         $this->fields[$field] = $value;
         return $this;
@@ -69,13 +91,22 @@ class DoctrineBinder implements IBinder {
         return $this;
     }
 
+    /**
+     * If the DoctrineBinder was created without whitelisting and some values should not be bound,
+     * except can be used.
+     *
+     * @param string $field the field that should not be bound
+     * @return DoctrineBinder
+     */
     public function except($field) {
         $this->except[] = $field;
         return $this;
     }
 
     /**
-     * @return object
+     * @see Binder::execute()
+     *
+     * @return mixed
      */
     public function execute()
     {
@@ -149,7 +180,7 @@ class DoctrineBinder implements IBinder {
         return $getMethodBinder->execute();
     }
 
-    public function getReference($value, $field, $metaData)
+    private function getReference($value, $field, $metaData)
     {
         $id = $value;
         if ($value instanceof \stdClass) {

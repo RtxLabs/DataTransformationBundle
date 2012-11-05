@@ -44,11 +44,6 @@ $result = DoctrineBinder::create($em)->bind($models)->execute();
 $json = Dencoder::decode($result);
 ```
 
-In addition the binder can be used to:
-- calculate values before returning them //TODO add a link
-- bind request data to entities //TODO add a link
-- joining data of referenced models //TODO add a link
-
 Documentation
 -------------
 
@@ -58,4 +53,5 @@ Documentation
 - [Joining referenced entities](DataTransformationBundle/tree/master/Resources/doc/joining.md)
 - [Binding data to entities](DataTransformationBundle/tree/master/Resources/doc/binding_to_objects.md)
 - [Binding calculated values](DataTransformationBundle/tree/master/Resources/doc/calculation.md)
+- [Encode and decode bound values](DataTransformationBundle/tree/master/Resources/doc/dencoder.md)
 
