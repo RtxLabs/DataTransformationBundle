@@ -1,7 +1,7 @@
 <?php
 namespace RtxLabs\DataTransformationBundle\Tests\Binder;
 
-require_once "{$_SERVER['KERNEL_DIR']}/AppKernel.php";
+//require_once "{$_SERVER['KERNEL_DIR']}/AppKernel.php";
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
