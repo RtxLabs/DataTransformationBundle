@@ -1,7 +1,7 @@
 {
   "name": "rtxlabs/data-transformation-bundle",
   "description": "",
-  "keywords": [""],
+  "keywords": ["json", "entity", "bundle", "doctrine"],
   "type": "symfony-bundle",
   "license": "MIT",
   "authors": [
