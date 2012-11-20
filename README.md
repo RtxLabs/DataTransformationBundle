@@ -3,7 +3,7 @@ DataTransformation Bundle
 
 Symfony2 Bundle that can help building REST services.
 
-+[![Build Status](https://secure.travis-ci.org/RtxLabs/DataTransformationBundle.png)](http://travis-ci.org/RtxLabs/DataTransformationBundle)
+[![Build Status](https://secure.travis-ci.org/RtxLabs/DataTransformationBundle.png)](http://travis-ci.org/RtxLabs/DataTransformationBundle)
 
 Example
 -------
