@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\CarMock
  *
- * @ORM\Table(name="core_test_car_mock")
- * @ORM\Entity(repositoryClass="RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\CarMockRepository")
+ * @ORM\Table()
+ * @ORM\Entity()
  */
 class CarMock
 {
@@ -37,6 +37,11 @@ class CarMock
         return $this->id;
     }
 
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
     /**
      * Set name
      *
@@ -46,8 +51,6 @@ class CarMock
     {
         $this->name = $name;
     }
-
-
 
     /**
      * Get name

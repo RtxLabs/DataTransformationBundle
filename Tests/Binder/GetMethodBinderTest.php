@@ -2,6 +2,7 @@
 namespace RtxLabs\DataTransformationBundle\Tests\Binder;
 
 use RtxLabs\DataTransformationBundle\Binder\GetMethodBinder;
+use RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\JeepMock;
 use RtxLabs\DataTransformationBundle\Tests\Mockups\EntityDummy;
 use RtxLabs\DataTransformationBundle\Tests\Mockups\EntityMock;
 use RtxLabs\DataTransformationBundle\Tests\Mockups\EntityDummyWithoutId;
@@ -62,6 +63,16 @@ class GetMethodBinderTest extends \PHPUnit_Framework_TestCase
                 ->execute();
 
         $this->assertEquals($closure($bind), $result["calc"]);
+    }
+
+    public function testBindExtended() {
+        $entity = new JeepMock();
+        $data = new \stdClass();
+        $data->name = "theNewName";
+
+        $result = GetMethodBinder::create(false)->bind($data)->to($entity)->execute();
+
+        $this->assertEquals($data->name, $result->getName());
     }
 
     public function testExcept01() {

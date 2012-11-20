@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\GroupMock
  *
- * @ORM\Table(name="core_test_user_mock")
- * @ORM\Entity(repositoryClass="RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\GroupMockRepository")
+ * @ORM\Table()
+ * @ORM\Entity()
  */
 class GroupMock
 {
