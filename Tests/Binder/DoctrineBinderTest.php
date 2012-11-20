@@ -15,8 +15,6 @@ use RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\GroupMock;
 use RtxLabs\DataTransformationBundle\Tests\Mockups\Entity\UserMock;
 use RtxLabs\DataTransformationBundle\Tests\Mockups\EntityDummyWithoutId;
 use RtxLabs\DataTransformationBundle\Tests\TestHelper;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 
 
@@ -29,15 +27,10 @@ class DoctrineBinderTest extends OrmTestCase
 
     public function setUp()
     {
-//        $kernel = static::createKernel();
-//        $kernel->boot();
         $reader = new AnnotationReader();
-        $reader->setIgnoreNotImportedAnnotations(true);
-        $reader->setEnableParsePhpImports(true);
 
         $metadataDriver = new AnnotationDriver(
             $reader,
-            // provide the namespace of the entities you want to tests
             __DIR__.'/../Mockups/Entity'
         );
 
