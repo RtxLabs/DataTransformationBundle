@@ -44,7 +44,7 @@ class Binder implements IBinder {
                 if (is_null($closure)) {
                     $value = $this->getValue($this->bind, $field);
                 }
-                elseif (is_callable($closure)) {
+                elseif (!is_string($closure) && is_callable($closure)) {
                     $value = $closure($this->bind);
                 }
 

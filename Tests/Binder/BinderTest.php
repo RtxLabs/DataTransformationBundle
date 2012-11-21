@@ -185,7 +185,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
 
     public function testBindTo()
     {
-        $bind = array("firstName"=>"Uwe", "lastName"=>"Klawitter");
+        $bind = array("firstName"=>"Max", "lastName"=>"Klawitter");
         $to = new EntityDummy();
 
         Binder::create()->bind($bind)->field("firstName")->field("lastName")->to($to)->execute();
