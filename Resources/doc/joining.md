@@ -46,7 +46,7 @@ Example: GetMethodBinder
 
 ```php
 $users = $repository->findAll();
-$stdClass = GetMethodBinder::create(false)
+$stdClass = $this->container->get('getmethodbinder')
     ->bind($users)
     ->join("car", GetMethodBinder::create(false))
     ->execute();
@@ -58,7 +58,7 @@ Example: DoctrineBinder
 
 ```php
 $users = $repository->findAll();
-$stdClass = DoctrineBinder::create(false)
+$stdClass = $this->container->get('doctrinebinder')
     ->bind($users)
     ->join("car", DoctrineBinder::create(false))
     ->execute();

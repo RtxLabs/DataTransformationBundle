@@ -34,13 +34,7 @@ an json_encode() to on the entities won't work, because the entity contains prox
 solve this, the DoctrineBinder can be used:
 
 ```php
-// loading the entity manager to create the doctrine binder instance
-$em = $this->getDoctrine()->getEntityManager();
-
-// create a doctrine binder, bind the models that have been loaded before and execute the binder. The execute
-// method will iterate over the models and return an array containing stdClass objects with all values defined
-// by getters.
-$result = DoctrineBinder::create($em)->bind($models)->execute();
+$result = $this->container->get('doctrinebinder')->bind($models)->execute();
 
 // finally the result has to be converted into json to return it as an response
 $json = Dencoder::decode($result);

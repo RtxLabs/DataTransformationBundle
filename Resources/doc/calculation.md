@@ -46,7 +46,7 @@ Binding with GetMethodBinder
 
 ```php
 $users = $repository->findAll();
-$stdClass = GetMethodBinder::create(false)
+$stdClass = $this->container->get('getmethodbinder')
     ->bind($users)
     ->field("groupCount", function($user) {
         return count($user->getGroups());
@@ -60,7 +60,7 @@ Binding with DoctrineBinder
 
 ```php
 $users = $repository->findAll();
-$stdClass = DoctrineBinder::create(false)
+$stdClass = $this->container->get('doctrinebinder')
     ->bind($users)
     ->field("groupCount", function($user) {
         return count($user->getGroups());

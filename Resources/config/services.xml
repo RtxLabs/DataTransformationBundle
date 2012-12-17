@@ -15,10 +15,14 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%rtxlabs_datatransformation.whitelisting%</argument>
         </service>
+        <service id="doctrinebinder" alias="rtxlabs.datatransformation.doctrinebinder" />
+
         <service id="rtxlabs.datatransformation.getmethodbinder"
                 class="RtxLabs\DataTransformationBundle\Binder\GetMethodBinder"
                 scope="prototype">
             <argument>%rtxlabs_datatransformation.whitelisting%</argument>
         </service>
+        <service id="getmethodbinder" alias="rtxlabs.datatransformation.getmethodbinder" />
+
     </services>
 </container>

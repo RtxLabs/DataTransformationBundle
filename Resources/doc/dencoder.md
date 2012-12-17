@@ -13,7 +13,7 @@ Data that is given by a POST/PUT request has to be converted into data that can 
 
 ```php
 $data = Dencoder::decode($this->getRequest()->getContent());
-$this->createDoctrineBinder()
+$this->container->get('doctrinebinder')
     ->bind($data)
     ->to($template)
     ->execute();

@@ -1,6 +1,6 @@
 {
-  "name": "rtxlabs/data-transformation-bundle",
-  "description": "",
+  "name": "rtxlabs/datatransformation-bundle",
+  "description": "Provides mappers for generate complex JSON outputs from entities",
   "keywords": ["json", "entity", "bundle", "doctrine"],
   "type": "symfony-bundle",
   "license": "MIT",

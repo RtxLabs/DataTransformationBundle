@@ -25,6 +25,20 @@ Run the following commands to bring in the needed libraries as submodules.
 git submodule add https://github.com/RtxLabs/DataTransformationBundle.git vendor/bundles/RtxLabs/DataTransformationBundle
 ```
 
+### Method c) Using Composer
+
+Add the following lines in your `composer.json` file:
+
+``` js
+"require": {
+    "rtxlabs/datatransformation-bundle": "1.0.*"
+}
+```
+
+Run Composer to download and install the bundle:
+
+    $ php composer.phar update rtxlabs/datatransformation-bundle
+
 ## Step 2) Register the namespaces
 
 Add the following namespace entry to the `registerNamespaces` call

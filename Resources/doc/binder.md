@@ -9,6 +9,8 @@ $contact = new Contact();
 $contact->setFirstname("Max");
 $contact->setLastname("Muster");
 
+$stdClass = Binder::create()->bind($contact)->execute();
+
 $this->assertBound($entity->getId(), "id", $entity);
 ´´´
 

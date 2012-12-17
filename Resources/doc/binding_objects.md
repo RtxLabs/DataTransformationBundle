@@ -42,7 +42,7 @@ Example: GetMethodBinder
 
 ```php
 $user = $repository->findOneById(1181);
-$stdClass = GetMethodBinder::create(false)
+$stdClass = $this->container->get('getmethodbinder')
     ->bind($user)
     ->field("car", function($user) {
         $car = $user->getCar();
@@ -61,6 +61,6 @@ Example: DoctrineBinder
 
 ```php
 $user = $repository->findOneById(1181);
-$stdClass = DoctrineBinder::create(false)->bind($user)->execute();
+$stdClass = $this->container->get('doctrinebinder')->bind($user)->execute();
 $json = Dencoder::decode($stdClass);
 ```

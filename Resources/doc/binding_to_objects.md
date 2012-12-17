@@ -40,7 +40,7 @@ Example: GetMethodBinder
 ```php
 $data = Dencoder::decode($this->getRequest()->getContent());
 $user = $userRepository->find($data->id);
-GetMethodBinder::create(false)
+$this->container->get('getmethodbinder')
     ->bind($data)
     ->to($user)
     ->field("car", function($carId) use ($user, $carRepository) {
@@ -55,7 +55,7 @@ Example: DoctrineBinder
 ```php
 $data = Dencoder::decode($this->getRequest()->getContent());
 $user = $userRepository->find($data->id);
-DoctrineBinder::create(false)
+$this->container->get('doctrinebinder')
     ->bind($data)
     ->to($user)
     ->execute();

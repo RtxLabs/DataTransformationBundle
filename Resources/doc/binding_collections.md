@@ -49,7 +49,7 @@ Binding with GetMethodBinder
 
 ```php
 $users = $repository->findAll();
-$stdClass = GetMethodBinder::create(false)
+$stdClass = $this->container->get('getmethodbinder')
     ->bind($users)
     ->field("car", function($user) {
         $car = $user->getCar();
@@ -68,6 +68,6 @@ Binding with DoctrineBinder
 
 ```php
 $users = $repository->findAll();
-$stdClass = DoctrineBinder::create(false)->bind($users)->execute();
+$stdClass = $this->container->get('doctrinebinder')->bind($users)->execute();
 $json = Dencoder::decode($stdClass);
 ```
