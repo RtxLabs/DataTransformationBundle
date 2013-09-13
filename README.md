@@ -43,11 +43,11 @@ $json = Dencoder::decode($result);
 Documentation
 -------------
 
-- [Installation](DataTransformationBundle/tree/master/Resources/doc/installation.md)
-- [Binding objects / entities](DataTransformationBundle/tree/master/Resources/doc/binding_objects.md)
-- [Binding collections](DataTransformationBundle/tree/master/Resources/doc/binding_collections.md)
-- [Joining referenced entities](DataTransformationBundle/tree/master/Resources/doc/joining.md)
-- [Binding data to entities](DataTransformationBundle/tree/master/Resources/doc/binding_to_objects.md)
-- [Binding calculated values](DataTransformationBundle/tree/master/Resources/doc/calculation.md)
-- [Encode and decode bound values](DataTransformationBundle/tree/master/Resources/doc/dencoder.md)
+- [Installation](DataTransformationBundle/blob/master/Resources/doc/installation.md)
+- [Binding objects / entities](DataTransformationBundle/blob/master/Resources/doc/binding_objects.md)
+- [Binding collections](DataTransformationBundle/blob/master/Resources/doc/binding_collections.md)
+- [Joining referenced entities](DataTransformationBundle/blob/master/Resources/doc/joining.md)
+- [Binding data to entities](DataTransformationBundle/blob/master/Resources/doc/binding_to_objects.md)
+- [Binding calculated values](DataTransformationBundle/blob/master/Resources/doc/calculation.md)
+- [Encode and decode bound values](DataTransformationBundle/blob/master/Resources/doc/dencoder.md)
 
