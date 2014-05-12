@@ -13,22 +13,25 @@ class GetMethodBinder implements IBinder {
     private $to;
 
     private $whitelisting;
+    private $xssSecure;
+    private $xssExcept = array();
 
     /**
      * @see DoctrineBinder::create()
      * @static
      * @return \RtxLabs\DataTransformationBundle\Binder\GetMethodBinder
      */
-    public static function create($whitelisting=true)
+    public static function create($whitelisting=true, $xssSecure=true)
     {
-        return new self($whitelisting);
+        return new self($whitelisting, $xssSecure);
     }
 
     /**
      * @see GetMethodBinder::create()
      */
-    public function __construct($whitelisting=true)
+    public function __construct($whitelisting=true, $xssSecure=true)
     {
+        $this->xssSecure = $xssSecure;
         $this->whitelisting = $whitelisting;
     }
 
@@ -86,6 +89,15 @@ class GetMethodBinder implements IBinder {
     }
 
     /**
+     * @param string $field the field that should not be cleaned
+     * @return DoctrineBinder
+     */
+    public function xssExcept($field) {
+        $this->xssExcept[] = $field;
+        return $this;
+    }
+
+    /**
      * @see Binder::execute()
      * @return object|array
      */
@@ -103,7 +115,7 @@ class GetMethodBinder implements IBinder {
             }
         }
         else {
-            $binder = Binder::create()->bind($this->bind)->to($this->to);
+            $binder = Binder::create($this->xssSecure)->bind($this->bind)->to($this->to);
 
             foreach ($this->fields as $field=>$closure) {
                 $binder->field($field, $closure);
@@ -117,6 +129,10 @@ class GetMethodBinder implements IBinder {
                 if ($this->isWhitelisted($key) && !in_array($key, $this->except)) {
                     $binder->field($key, $value);
                 }
+            }
+
+            foreach ($this->xssExcept as $xssExcept) {
+                $binder->xssExcept($xssExcept);
             }
 
             if (is_object($this->bind)) {

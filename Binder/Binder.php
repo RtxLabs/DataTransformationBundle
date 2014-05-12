@@ -6,14 +6,24 @@ class Binder implements IBinder {
     private $joins = array();
     private $bind = null;
     private $to = null;
+    private $xssSecure;
+    private $xssExcept = array();
 
+    /**
+     * @param boolean $xssSecure  if xssSecure is true, some html chars will be removed from strings.
+     * @return DoctrineBinder
+     */
+    public function __construct($xssSecure=true)
+    {
+        $this->xssSecure = $xssSecure;
+    }
     /**
      * @static
      * @return Binder
      */
-    public static function create()
+    public static function create($xssSecure = true)
     {
-        return new self();
+        return new self($xssSecure);
     }
 
     /**
@@ -43,6 +53,9 @@ class Binder implements IBinder {
                 $value = $closure;
                 if (is_null($closure)) {
                     $value = $this->getValue($this->bind, $field);
+                    if ($this->xssSecure && !in_array($field, $this->xssExcept) && is_string($value)) {
+                        $value = preg_replace('/[^A-Za-z0-9 !@#$%^&*()\/:.]/u', '', strip_tags(html_entity_decode($value)));
+                    }
                 }
                 elseif (!is_string($closure) && is_callable($closure)) {
                     $value = $closure($this->bind);
@@ -276,5 +289,14 @@ class Binder implements IBinder {
         else {
             return null;
         }
+    }
+
+    /**
+     * @param string $field the field that should not be cleaned
+     * @return DoctrineBinder
+     */
+    public function xssExcept($field) {
+        $this->xssExcept[] = $field;
+        return $this;
     }
 }
