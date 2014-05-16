@@ -19,15 +19,19 @@ class DoctrineBinder implements IBinder {
     private $joins = array();
     private $metadata = null;
     private $whitelisting;
+    private $xssSecure;
+    private $xssExcept = array();
 
     /**
      * @param $em \Doctrine\ORM\EntityManager
      * @param boolean $whitelisting if whitelisting is true, the fields that has to be bound has to be defined by
      *                              calling the "field" method.
+     * @param boolean $xssSecure  if xssSecure is true, some html chars will be removed from strings.
      * @return DoctrineBinder
      */
-    public function __construct($em, $whitelisting=true)
+    public function __construct($em, $whitelisting=true, $xssSecure=true)
     {
+        $this->xssSecure = $xssSecure;
         $this->whitelisting = $whitelisting;
         $this->em = $em;
     }
@@ -36,9 +40,9 @@ class DoctrineBinder implements IBinder {
      * @static
      * @return \RtxLabs\DataTransformationBundle\Binder\DoctrineBinder
      */
-    public static function create($em, $whitelisting=true)
+    public static function create($em, $whitelisting=true, $xssSecure=true)
     {
-        return new self($em, $whitelisting);
+        return new self($em, $whitelisting, $xssSecure);
     }
 
     /**
@@ -177,6 +181,10 @@ class DoctrineBinder implements IBinder {
             $getMethodBinder->except($except);
         }
 
+        foreach ($this->xssExcept as $xssExcept) {
+            $getMethodBinder->xssExcept($xssExcept);
+        }
+
         return $getMethodBinder->execute();
     }
 
@@ -216,5 +224,17 @@ class DoctrineBinder implements IBinder {
         return $fieldType == Type::DATETIME
             || $fieldType == Type::DATE
             || $fieldType == Type::TIME;
+    }
+
+    /**
+     * If the DoctrineBinder was created with xssSecure and some values should not be cleaned,
+     * xssExcept can be used.
+     *
+     * @param string $field the field that should not be cleaned
+     * @return DoctrineBinder
+     */
+    public function xssExcept($field) {
+        $this->xssExcept[] = $field;
+        return $this;
     }
 }

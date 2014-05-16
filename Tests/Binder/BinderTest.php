@@ -39,6 +39,54 @@ class BinderTest extends \PHPUnit_Framework_TestCase
         $this->assertBound($entity->hobby, "hobby", $entity);
     }
 
+    public function testExecuteWidthXss()
+    {
+        $entity = new EntityDummy();
+        $entity->foo = "<script>bar</script>";
+
+        $result = Binder::create()->bind($entity)->field("foo")->execute();
+        $this->assertEquals("bar", $result['foo']);
+    }
+
+    public function testExecuteWidthoutXss()
+    {
+        $entity = new EntityDummy();
+        $entity->bar = "<script>foo</script>";
+
+        $result = Binder::create(false)->bind($entity)->field("bar")->execute();
+        $this->assertEquals($entity->bar, $result['bar']);
+    }
+
+    public function testExecuteWidthXssExcept()
+    {
+        $entity = new EntityDummy();
+        $entity->stillxss = "<script>xss</script>";
+
+        $result = Binder::create()->bind($entity)->field("stillxss")
+            ->xssExcept('stillxss')->execute();
+        $this->assertEquals($entity->stillxss, $result['stillxss']);
+    }
+
+    public function testExecuteWidthXssExceptMultiple()
+    {
+        $entity = new EntityDummy();
+        $entity->foo1 = "<script>bar1</script>";
+        $entity->foo2 = "<script>bar2</script>";
+        $entity->foo3 = "<script>bar3</script>";
+
+        $result = Binder::create()->bind($entity)
+            ->field("foo1")
+            ->field('foo2')
+            ->field('foo3')
+            ->xssExcept('foo1')
+            ->xssExcept('foo3')
+            ->execute();
+
+        $this->assertEquals($entity->foo1, $result['foo1']);
+        $this->assertEquals('bar2', $result['foo2']);
+        $this->assertEquals($entity->foo3, $result['foo3']);
+    }
+
     public function testExecuteWithObject()
     {
         $parent = new EntityDummy();

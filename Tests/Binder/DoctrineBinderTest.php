@@ -5,7 +5,6 @@ namespace RtxLabs\DataTransformationBundle\Tests\Binder;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Doctrine\Tests\OrmTestCase;
 use RtxLabs\DataTransformationBundle\Binder\DoctrineBinder;
 use RtxLabs\DataTransformationBundle\Binder\GetMethodBinder;
 use RtxLabs\DataTransformationBundle\Tests\Mockups\EntityDummy;
@@ -18,7 +17,7 @@ use RtxLabs\DataTransformationBundle\Tests\TestHelper;
 
 
 
-class DoctrineBinderTest extends OrmTestCase
+class DoctrineBinderTest
 {
     /**
      * @var \Doctrine\ORM\EntityManager
