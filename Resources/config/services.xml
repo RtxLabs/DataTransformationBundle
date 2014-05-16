@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="rtxlabs_datatransformation.whitelisting">true</parameter>
+        <parameter key="rtx_labs_data_transformation.whitelisting">true</parameter>
     </parameters>
 
     <services>
@@ -13,14 +13,14 @@
                 class="RtxLabs\DataTransformationBundle\Binder\DoctrineBinder"
                 scope="prototype">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument>%rtxlabs_datatransformation.whitelisting%</argument>
+            <argument>%rtx_labs_data_transformation.whitelisting%</argument>
         </service>
         <service id="doctrinebinder" alias="rtxlabs.datatransformation.doctrinebinder" />
 
         <service id="rtxlabs.datatransformation.getmethodbinder"
                 class="RtxLabs\DataTransformationBundle\Binder\GetMethodBinder"
                 scope="prototype">
-            <argument>%rtxlabs_datatransformation.whitelisting%</argument>
+            <argument>%rtx_labs_data_transformation.whitelisting%</argument>
         </service>
         <service id="getmethodbinder" alias="rtxlabs.datatransformation.getmethodbinder" />
 
